@@ -37,11 +37,11 @@ module CachedFind
     def cached_find_key_for( cached_method, *parts )
       options = parts.extract_options!
 
-      key = "#{class_name.underscore}:#{cached_method}:#{parts.join(',')}"
+      key = "#{name.to_s.demodulize.underscore}:#{cached_method}:#{parts.join(',')}"
       key += ":#{options.collect { |k,v| "#{k}=#{v}" }.sort.join(',')}" unless options.empty?
       key.gsub!(' ','_')
 
-      "CF:#{class_name.underscore}:#{Digest::SHA1.hexdigest( key )}"
+      "CF:#{name.to_s.demodulize.underscore}:#{Digest::SHA1.hexdigest( key )}"
     end
 
     # This deals with the fact that Ruby needs to have a class loaded before it can be unmarshalled
